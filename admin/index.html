@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Painel administrativo | Kronix Store</title>
+    <link rel="stylesheet" href="/admin/static/admin.css">
+    <script defer src="/admin/static/admin.js"></script>
+    <link rel="icon" type="image/png" href="assets/hero-art.jpg">
+</head>
+
+<body>
+    <header><a href="/" class="brand">KRONIX <span>STORE</span></a>
+        <div class="header-actions"><span><span class="live-dot"></span> PAINEL DO PROPRIETÁRIO</span><a class="secondary-link" href="/admin/dashboard">Novo dashboard ↗</a><button id="logout" hidden>Sair</button></div>
+    </header>
+    <main>
+        <section id="login-view" class="login-card">
+            <p class="eyebrow">ÁREA RESTRITA</p>
+            <h1>Acesso administrativo</h1>
+            <p>Entre para revisar pedidos e autorizar o encaminhamento aos fornecedores.</p>
+            <form id="login-form"><label for="password">Senha administrativa</label><input id="password" type="password"
+                    autocomplete="current-password" required><button class="primary">Entrar no painel</button></form>
+            <p id="login-error" class="notice" role="alert"></p>
+        </section>
+        <section id="dashboard" hidden>
+            <div class="heading">
+                <div>
+                    <p class="eyebrow">CENTRAL DE OPERAÇÕES</p>
+                    <h1>Pedidos e fornecedores</h1>
+                    <p>O preço do produto Kronix é <strong>R$ 1.029,90</strong>, acrescido de frete internacional e tributos discriminados no checkout.</p>
+                </div><button id="refresh">Atualizar</button>
+            </div>
+            <div class="stats">
+                <article><small>Pedidos recebidos</small><strong id="stat-total">0</strong></article>
+                <article><small>Aguardando confirmação</small><strong id="stat-payment">0</strong></article>
+                <article><small>Aguardando aprovação</small><strong id="stat-approval">0</strong></article>
+                <article><small>Encaminhados</small><strong id="stat-sent">0</strong></article>
+            </div>
+            <section class="panel">
+                <div class="panel-heading"><div><h2>Visão financeira</h2><p>Valores de pedidos reais; pedidos de teste não entram nos indicadores.</p></div><button type="button" id="create-backup">Criar backup agora</button></div>
+                <div class="stats"><article><small>Valor total em pedidos reais</small><strong id="metric-gross">R$ 0,00</strong></article><article><small>Pagamentos confirmados</small><strong id="metric-paid">R$ 0,00</strong></article><article><small>Aguardando / em análise</small><strong id="metric-awaiting-finance">R$ 0,00</strong></article><article><small>Valores estornados</small><strong id="metric-refunded">R$ 0,00</strong></article><article><small>Aguardando compra</small><strong id="metric-awaiting-purchase">0</strong></article><article><small>Margem bruta estimada*</small><strong id="metric-margin">—</strong></article><article><small>Backups recentes</small><strong id="backup-count">0</strong></article></div><p class="hint">Atualização automática a cada 15 segundos · Última atualização: <strong id="last-dashboard-update">—</strong></p>
+                <p id="backup-message" class="hint" role="status"></p><p class="hint">*Estimativa baseada no último custo aprovado do fornecedor; não desconta tarifas do gateway, despesas operacionais ou tributos da empresa.</p>
+            </section>
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Integrações de fornecedores</h2>
+                        <p>Conectores preparados; credenciais e permissões ainda precisam ser aprovadas.</p>
+                    </div>
+                </div>
+                <div id="suppliers" class="supplier-grid"></div>
+                <p class="hint">A presença de credenciais não significa que a API permita efetuar compras como
+                    consumidor. O sistema bloqueia chamadas de compra não documentadas.</p>
+            </section>
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Vincular produto de fornecedor</h2>
+                        <p>Associe um link externo ao produto vendido na Kronix. O cadastro fica pendente até a
+                            conferência manual.</p>
+                    </div>
+                </div>
+                <form id="supplier-product-form" class="supplier-product-form"><!-- \n --><input type="hidden"
+                        id="supplier-product-edit-id" value="">
+                    <label>Produto da Kronix<select id="linked-product" required>
+                            <option value="cronus-zen">Cronus Zen</option>
+                        </select></label>
+                    <label>Fornecedor de origem<select id="supplier-store" required>
+                            <option value="" disabled selected>Selecione o fornecedor</option>
+                            <option value="shopee">Shopee</option>
+                            <option value="aliexpress">AliExpress</option>
+                            <option value="mercadolivre">Mercado Livre</option>
+                            <option value="other">Outro fornecedor</option>
+                        </select></label>
+                    <label class="wide">Link do produto<input id="supplier-product-url" type="url"
+                            placeholder="https://shopee.com.br/product/..." required></label>
+                    <label class="wide">Nome/observação (opcional)<input id="supplier-product-title" maxlength="180" placeholder="Ex.: Cronus Zen — fornecedor principal"></label>
+                    <label>Prazo estimado (dias)<input id="supplier-delivery-days" type="number" min="1" max="365" placeholder="Ex.: 20"></label>
+                    <label>Condições / observações<input id="supplier-conditions" maxlength="500" placeholder="Frete, garantia, devolução…"></label>
+                    <div class="form-actions wide"><button class="primary" id="supplier-product-submit"
+                            type="submit">Vincular produto</button><button type="button" id="supplier-product-cancel"
+                            hidden>Cancelar edição</button></div>
+                    <p id="supplier-product-message" class="hint wide" role="status"></p>
+                </form>
+                <div id="supplier-products" class="supplier-products">
+                    <p class="empty">Carregando vínculos…</p>
+                </div>
+            </section>
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Pedidos · fluxo operacional e financeiro</h2>
+                        <p>Gerencie o pagamento separadamente da etapa de compra e entrega. As alterações são refletidas no acompanhamento do cliente.</p>
+                    </div>
+                    <div class="queue-tools"><select id="filter">
+                            <option value="all">Todos os status</option>
+                            <option value="awaiting_payment">Aguardando pagamento</option>
+                            <option value="awaiting_owner_approval">Aguardando aprovação</option>
+                            <option value="test_paid">Teste pago · sem compra</option>
+                            <option value="supplier_setup_required">Configuração do fornecedor</option>
+                            <option value="supplier_ordered">Encaminhado</option>
+                            <option value="shipped">Enviado</option><option value="delivered">Entregue</option>
+                            <option value="rejected">Rejeitado</option>
+                        </select><select id="product-filter" aria-label="Filtrar produto"><option value="all">Todos os produtos</option><option value="cronus-zen">Cronus Zen</option></select><input id="date-from" type="date" aria-label="Data inicial"><input id="date-to" type="date" aria-label="Data final"><input id="order-search" type="search" placeholder="Buscar pedido, cliente ou e-mail" aria-label="Buscar pedidos"><button type="button" class="danger" id="clear-orders">Limpar pedidos de teste</button></div>
+                </div>
+                <div id="orders" class="orders">
+                    <p class="empty">Carregando pedidos…</p>
+                </div>
+            </section>
+            <section class="panel"><h2>Conciliação de pagamentos</h2><p>Eventos recebidos e status internos dos pedidos reais.</p><div id="reconciliation" class="audit"></div></section>
+            <section class="panel">
+                <h2>Registro de atividades</h2>
+                <div id="audit" class="audit"></div>
+            </section>
+        </section>
+    </main>
+    <div id="toast" role="status" aria-live="polite"></div>
+</body>
+
+</html>

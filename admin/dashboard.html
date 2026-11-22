@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8"><meta name="viewport"
+            content="width=device-width,initial-scale=1"><meta name="robots"
+            content="noindex,nofollow">
+        <title>Dashboard | Kronix Store</title><link rel="stylesheet"
+            href="/admin/static/dashboard.css"><script defer
+            src="/admin/static/dashboard.js"></script>
+            <link rel="icon" type="image/png" href="../assets/hero-art.jpg">
+    </head>
+    <body>
+        <section id="login-view" class="login-wrap"><form id="login-form"
+                class="login-card"><div class="brand-mark">K</div><p
+                    class="eyebrow">KRONIX STORE · ÁREA
+                    RESTRITA</p><h1>Dashboard administrativo</h1><p>Entre com a
+                    mesma senha do painel atual.</p><label for="password">Senha
+                    administrativa</label><input id="password" type="password"
+                    autocomplete="current-password" required><button
+                    class="primary">Entrar</button><p id="login-error"
+                    class="error" role="alert"></p><a href="/admin">Voltar ao
+                    painel atual</a></form></section>
+        <div id="app" class="app" hidden>
+            <aside class="sidebar"><a class="brand" href="/"> <span
+                        class="brand-mark">K</span><span>KRONIX<small>STORE</small></span></a><nav><a
+                        class="active" href="#overview">▦
+                        <span>Dashboard</span></a><a href="#orders">▤
+                        <span>Pedidos</span></a><a href="#insights">▥
+                        <span>Estatísticas</span></a><a href="/admin">⚙
+                        <span>Painel operacional atual</span></a></nav><div
+                    class="side-bottom"><span class="live-dot"></span> Ambiente
+                    administrativo</div></aside>
+            <main class="main"><header class="topbar"><div class="searchbox">⌕
+                        <input id="search" type="search"
+                            placeholder="Buscar pedido, cliente ou e-mail..."></div><div
+                        class="top-actions"><span class="live-label">● Dados
+                            protegidos</span><button id="refresh"
+                            class="icon-button"
+                            title="Atualizar">↻</button><button id="logout"
+                            class="outline">Sair</button></div></header>
+                <section id="overview" class="page-heading"><div><p
+                            class="eyebrow">VISÃO GERAL DA
+                            OPERAÇÃO</p><h1>Dashboard de pedidos</h1><p>Uma
+                            proposta visual independente para avaliar futuras
+                            melhorias.</p></div><div class="updated">ATUALIZADO
+                        <strong id="updated">—</strong></div></section>
+                <section class="toolbar"><div><label for="from">Período
+                            inicial</label><input id="from"
+                            type="date"></div><div><label for="to">Período
+                            final</label><input id="to"
+                            type="date"></div><div><label
+                            for="status">Status</label><select
+                            id="status"><option value="all">Todos os
+                                status</option><option
+                                value="awaiting_payment">Aguardando
+                                pagamento</option><option
+                                value="awaiting_owner_approval">Aguardando
+                                aprovação</option><option
+                                value="supplier_ordered">Compra
+                                registrada</option><option
+                                value="shipped">Enviado</option><option
+                                value="delivered">Entregue</option><option
+                                value="rejected">Rejeitado</option><option
+                                value="test">Somente
+                                testes</option></select></div><button
+                        id="clear-tests" class="danger">Limpar pedidos de
+                        teste</button></section>
+                <section class="metrics" id="insights"><article
+                        class="metric metric-wide"><div
+                            class="metric-title">Resumo financeiro <span>REAL ·
+                                SEM TESTES</span></div><div
+                            class="finance-grid"><div><small>Vendas
+                                    registradas</small><strong id="gross">R$
+                                    0,00</strong></div><div><small>Pagamentos
+                                    confirmados</small><strong id="paid">R$
+                                    0,00</strong></div><div><small>Margem
+                                    estimada*</small><strong
+                                    id="margin">—</strong></div></div><div
+                            class="progress-track"><span
+                                id="paid-progress"></span></div><small
+                            id="paid-caption">Aguardando dados</small></article>
+                    <article class="metric"><div
+                            class="metric-icon blue">✓</div><small>Pedidos
+                            concluídos</small><strong
+                            id="completed">0</strong><em>Entregues</em></article><article
+                        class="metric"><div
+                            class="metric-icon teal">≡</div><small>Pedidos em
+                            andamento</small><strong
+                            id="active">0</strong><em>Em
+                            processamento</em></article><article
+                        class="metric"><div
+                            class="metric-icon pink">⊘</div><small>Cancelados /
+                            rejeitados</small><strong
+                            id="canceled">0</strong><em>Não
+                            concluídos</em></article><article
+                        class="metric"><div
+                            class="metric-icon gray">↶</div><small>Pedidos de
+                            teste</small><strong id="tests">0</strong><em>Não
+                            entram no financeiro</em></article><article class="metric"><div class="metric-icon pink">⌛</div><small>Pagamentos pendentes / em análise</small><strong id="finance-pending">R$ 0,00</strong><em>Aguardando confirmação</em></article><article class="metric"><div class="metric-icon gray">↩</div><small>Valores estornados</small><strong id="finance-refunded">R$ 0,00</strong><em>Não contam como receita confirmada</em></article></section>
+                <section class="panel"><div class="panel-head"><div><h2>Visão de
+                                status</h2><p>Distribuição dos pedidos reais por
+                                etapa.</p></div><a href="/admin">Abrir painel
+                            operacional →</a></div><div class="status-bars"
+                        id="status-bars"></div></section>
+                <section id="orders" class="panel"><div
+                        class="panel-head"><div><h2>Pedidos recentes</h2><p
+                                id="result-count">Carregando
+                                pedidos...</p></div><span
+                            class="table-note">Pedidos de teste identificados
+                            separadamente</span></div><div
+                        class="table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente
+                                        /
+                                        Produto</th><th>Data</th><th>Pagamento</th><th>Status</th><th>Total</th><th>Ação</th></tr></thead><tbody
+                                id="order-rows"><tr><td
+                                        colspan="7">Carregando...</td></tr></tbody></table></div></section>
+                <footer>KRONIX STORE · DASHBOARD ADMINISTRATIVO <span>*Margem
+                        estimada conforme custo aprovado do
+                        fornecedor.</span></footer>
+            </main></div><div id="toast" role="status" aria-live="polite"></div>
+    </body></html>
